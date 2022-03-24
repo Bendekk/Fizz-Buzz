@@ -1,10 +1,18 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+ViewData["Title"] = "Fizz Buzz";
 }
-
 <div class="text-center">
-    <h1 class="display-4">Cześć</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 align="left" class="display-4">Welcome @Model.Name</h1>
+    <form align="left" method="post">
+        <div class="form-group">
+            <label asp-for="FizzBuzz.Number"></label><br/>
+            <input class="form-control" asp-for="FizzBuzz.Number" /><br />
+        </div>
+        <button class="btn btn-primary" type="submit">Zatwierdź</button>
+        <div class="alert alert-success" style="text-align:left"> @ViewData["Wynik"]</div>
+    </form>
 </div>
+    <span asp-validation-for="FizzBuzz.Number" class="text-danger"></span>
+
