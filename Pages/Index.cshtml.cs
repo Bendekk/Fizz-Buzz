@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FizzBuzzWeb.Models;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 
 namespace FizzBuzzWeb.Pages
@@ -10,10 +11,10 @@ namespace FizzBuzzWeb.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         [BindProperty]
-        public FizzBuzz FizzBuzz { get; set; }
+        public Year Year { get; set; }
         [BindProperty(SupportsGet = true)]
 
-        public String Name { get; set; }
+        public String? Name { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger)
         {
@@ -30,12 +31,22 @@ namespace FizzBuzzWeb.Pages
         }
         public IActionResult OnPost()
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                ViewData["Wynik"] = FizzBuzz.validationfor3(FizzBuzz.Number);
+                List<String> mylist;
+                var Data = HttpContext.Session.GetString("Data");
+                if (Data != null)
+                    mylist = JsonConvert.DeserializeObject<List<string>>(Data);
+                else
+                    mylist = new List<String>();
+                ViewData["Wynik"] = Year.Name + " urodził się w " + Year.Years.ToString() + Year.CheckYear(Year.Years);
+                Console.WriteLine(ViewData["Wynik"].ToString());
+                mylist.Add(ViewData["Wynik"].ToString());
+                HttpContext.Session.SetString("Data",JsonConvert.SerializeObject(mylist));
                 return Page();
             }
-            return RedirectToPage("./Privacy");
+            return Page();
+
         }
 
     }
