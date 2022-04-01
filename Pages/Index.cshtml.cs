@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using FizzBuzzWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-
+using FizzBuzzWeb.Data;
 
 namespace FizzBuzzWeb.Pages
 {
@@ -16,13 +16,19 @@ namespace FizzBuzzWeb.Pages
 
         public String? Name { get; set; }
 
-        public IndexModel(ILogger<IndexModel> logger)
+        private readonly PeopleContext _context;
+        public IList<Person> People { get; set; }
+
+
+        public IndexModel(ILogger<IndexModel> logger, PeopleContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public void OnGet()
         {
+            People = _context.Person.Where(p => p.FirstName == "Adam").OrderBy(p => p.LastName).ToList();
             if (string.IsNullOrWhiteSpace(Name))
             {
                 Name = "User";
