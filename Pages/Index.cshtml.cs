@@ -10,11 +10,11 @@ namespace FizzBuzzWeb.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        [BindProperty]
-        public Year Year { get; set; }
         [BindProperty(SupportsGet = true)]
-
         public String? Name { get; set; }
+
+        [BindProperty]
+        public Person Person { get; set; }
 
         private readonly PeopleContext _context;
         public IList<Person> People { get; set; }
@@ -28,15 +28,17 @@ namespace FizzBuzzWeb.Pages
 
         public void OnGet()
         {
-            People = _context.Person.Where(p => p.FirstName == "Adam").OrderBy(p => p.LastName).ToList();
+            People = _context.Person.ToList();
             if (string.IsNullOrWhiteSpace(Name))
             {
                 Name = "User";
-
             }
         }
         public IActionResult OnPost()
         {
+            People = _context.Person.ToList();
+            Person.CheckYear(Person.Years);
+            Person.Date = DateTime.Now;
             if (ModelState.IsValid)
             {
                 List<String> mylist;
@@ -45,12 +47,15 @@ namespace FizzBuzzWeb.Pages
                     mylist = JsonConvert.DeserializeObject<List<string>>(Data);
                 else
                     mylist = new List<String>();
-                ViewData["Wynik"] = Year.Name + " urodził się w " + Year.Years.ToString() + Year.CheckYear(Year.Years);
+                ViewData["Wynik"] = Person.FirstName + " urodził się w " + Person.Years.ToString() + Person.Loop;
                 Console.WriteLine(ViewData["Wynik"].ToString());
                 mylist.Add(ViewData["Wynik"].ToString());
                 HttpContext.Session.SetString("Data",JsonConvert.SerializeObject(mylist));
+                _context.Person.Add(Person);
+                _context.SaveChanges();
                 return Page();
             }
+            Console.WriteLine("halo");
             return Page();
 
         }

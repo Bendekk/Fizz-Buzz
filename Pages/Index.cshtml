@@ -7,15 +7,18 @@ ViewData["Title"] = "Fizz Buzz";
     <h1 align="left" class="display-4">Welcome @Model.Name</h1>
     <form align="left" method="post">
         <div class="form-group">
-            <label asp-for="Year.Name"></label><br/>
-            <input class="form-control" asp-for="Year.Name" /><br />
-            <label asp-for="Year.Years"></label><br/>
-            <input class="form-control" asp-for="Year.Years" /><br />
+            <label asp-for="Person.FirstName"></label><br/>
+            <input class="form-control" asp-for="Person.FirstName" /><br />
+            <label asp-for="Person.LastName"></label><br/>
+            <input class="form-control" asp-for="Person.LastName" /><br />
+            <label asp-for="Person.Years"></label><br/>
+            <input class="form-control" asp-for="Person.Years" /><br />
         </div>
         <button class="btn btn-primary" type="submit">Zatwierdź</button>
         <div>
-            <span asp-validation-for="Year.Name" class="text-danger"></span>
-            <span asp-validation-for="Year.Years" class="text-danger"></span>
+            <span asp-validation-for="Person.FirstName" class="text-danger"></span>
+            <span asp-validation-for="Person.LastName" class="text-danger"></span>
+            <span asp-validation-for="Person.Years" class="text-danger"></span>
         </div>
         @if (ViewData["Wynik"] !=null)
         {

@@ -1,0 +1,18 @@
+﻿@page
+@model FizzBuzzWeb.Pages.SavedinBaseModel
+@{
+    ViewData["Title"] = "Data in Base";
+}
+
+@if (Model.People != null)
+{
+    <form method="post">
+     <ul class="list-group">
+        @foreach(var person in Model.People)
+        {
+            <p>@Html.DisplayFor(modelItem => person)</p>
+            <input type="submit" asp-page-handler="Delete" asp-route-IdToDelete = "@person.Id"/>
+        }
+    </ul>
+    </form>
+}

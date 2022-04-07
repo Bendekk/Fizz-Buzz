@@ -14,7 +14,6 @@ namespace FizzBuzzWeb.Pages
             var Data = HttpContext.Session.GetString("Data");
             if (Data != null)
                 myList = JsonConvert.DeserializeObject<List<string>>(Data);
-
         }
     }
 }
