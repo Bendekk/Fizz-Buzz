@@ -4,31 +4,36 @@ using FizzBuzzWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using FizzBuzzWeb.Data;
+using FizzBuzzWeb.Interfaces;
+using FizzBuzzWeb.VievModels;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace FizzBuzzWeb.Pages
 {
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
+        private readonly IPersonService _personService;
+        public ListPersonForListVM Records { get; set; }
+
         [BindProperty(SupportsGet = true)]
         public String? Name { get; set; }
 
         [BindProperty]
-        public Person Person { get; set; }
-
-        private readonly PeopleContext _context;
-        public IList<Person> People { get; set; }
+        public PersonForListVM Person { get; set; }
 
 
-        public IndexModel(ILogger<IndexModel> logger, PeopleContext context)
+        public IndexModel(ILogger<IndexModel> logger, IPersonService personService)
         {
             _logger = logger;
-            _context = context;
+            _personService = personService;
         }
 
         public void OnGet()
         {
-            People = _context.Person.ToList();
+            Records = _personService.GetEntriesFromToday();
             if (string.IsNullOrWhiteSpace(Name))
             {
                 Name = "User";
@@ -36,26 +41,11 @@ namespace FizzBuzzWeb.Pages
         }
         public IActionResult OnPost()
         {
-            People = _context.Person.ToList();
-            Person.CheckYear(Person.Years);
-            Person.Date = DateTime.Now;
+            Records = _personService.GetEntriesFromToday();
             if (ModelState.IsValid)
             {
-                List<String> mylist;
-                var Data = HttpContext.Session.GetString("Data");
-                if (Data != null)
-                    mylist = JsonConvert.DeserializeObject<List<string>>(Data);
-                else
-                    mylist = new List<String>();
-                ViewData["Wynik"] = Person.FirstName + " urodził się w " + Person.Years.ToString() + Person.Loop;
-                Console.WriteLine(ViewData["Wynik"].ToString());
-                mylist.Add(ViewData["Wynik"].ToString());
-                HttpContext.Session.SetString("Data",JsonConvert.SerializeObject(mylist));
-                _context.Person.Add(Person);
-                _context.SaveChanges();
-                return Page();
+                _personService.AddEntry(Person);
             }
-            Console.WriteLine("halo");
             return Page();
 
         }

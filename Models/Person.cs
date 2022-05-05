@@ -17,6 +17,7 @@ namespace FizzBuzzWeb.Models
         public int? Years { get; set; }
         public DateTime? Date { get; set; }
         public string? Loop { get; set; }
+        public bool IsActive { get; set; }
         public string CheckYear(int? year)
         {
             if (year % 400 == 0)

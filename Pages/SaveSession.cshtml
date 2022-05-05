@@ -1,4 +1,14 @@
 ﻿@page
 @model FizzBuzzWeb.Pages.SaveSessionModel
 @{
+    ViewData["Title"] = "Save Session";
+}
+@if(Model.Results.People != null)
+{
+    @foreach(var p in Model.Results.People)
+    {
+        <li class="list-group-item">
+            <span>@p.FullName @p.Years @p.Loop</span>
+        </li>
+    }
 }

@@ -4,28 +4,29 @@
 ViewData["Title"] = "Fizz Buzz";
 }
 <div class="text-center">
-    <h1 align="left" class="display-4">Welcome @Model.Name</h1>
+    <h1 align="left" class="display-4">Welcome</h1>
     <form align="left" method="post">
         <div class="form-group">
-            <label asp-for="Person.FirstName"></label><br/>
-            <input class="form-control" asp-for="Person.FirstName" /><br />
-            <label asp-for="Person.LastName"></label><br/>
-            <input class="form-control" asp-for="Person.LastName" /><br />
+            <label asp-for="Person.FullName"></label><br/>
+            <input class="form-control" asp-for="Person.FullName" /><br />
             <label asp-for="Person.Years"></label><br/>
             <input class="form-control" asp-for="Person.Years" /><br />
         </div>
         <button class="btn btn-primary" type="submit">Zatwierdź</button>
         <div>
-            <span asp-validation-for="Person.FirstName" class="text-danger"></span>
-            <span asp-validation-for="Person.LastName" class="text-danger"></span>
+            <span asp-validation-for="Person.FullName" class="text-danger"></span>
             <span asp-validation-for="Person.Years" class="text-danger"></span>
         </div>
-        @if (ViewData["Wynik"] !=null)
-        {
-            <div class="alert alert-success" style="text-align:left"> @ViewData["Wynik"]</div>
-        }
     </form>
-
+    <h1 align="left" class="display-4">Today</h1>
+    @if (Model.Records != null)
+    {
+        @foreach(var p in Model.Records.People){
+            <li class="list-group-item">
+                <span>@p.FullName @p.Years @p.Loop</span>
+            </li>
+        }
+    }
 </div>
     
 
